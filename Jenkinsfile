@@ -18,7 +18,7 @@ node {
     }
 
     stage('Deliver') {
-        docker.image('cdrx/pyinstaller-linux:python2').inside {
+        docker.image('cdrx/pyinstaller-linux:python2').inside('--rm -v $WORKSPACE:/workspace -w /workspace') {
             try {
                 sh 'set -x'  // Enable debug logging
                 sh 'pyinstaller --version || echo "PyInstaller is missing!"'
