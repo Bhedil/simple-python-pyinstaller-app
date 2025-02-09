@@ -1,42 +1,23 @@
 node {
     stage('Build') {
-        agent {
-            docker {
-                image 'python:2-alpine'
-            }
-        }
-        steps {
+        docker.image('python:2-alpine').inside {
             sh 'python -m py_compile sources/add2vals.py sources/calc.py'
         }
     }
+    
     stage('Test') {
-        agent {
-            docker {
-                image 'qnib/pytest'
-            }
-        }
-        steps {
+        docker.image('qnib/pytest').inside {
             sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
         }
-        post {
-            always {
-                junit 'test-reports/results.xml'
-            }
-        }
+        
+        junit 'test-reports/results.xml'
     }
+    
     stage('Deliver') {
-        agent {
-            docker {
-                image 'cdrx/pyinstaller-linux:python2'
-            }
-        }
-        steps {
+        docker.image('cdrx/pyinstaller-linux:python2').inside {
             sh 'pyinstaller --onefile sources/add2vals.py'
         }
-        post {
-            success {
-                archiveArtifacts 'dist/add2vals'
-            }
-        }
+        
+        archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
     }
 }
