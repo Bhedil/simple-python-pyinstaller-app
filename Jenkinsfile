@@ -1,5 +1,5 @@
 node {
-    stage('Debug Checkout') {
+    stage('Checkout') {
         try {
             sh 'pwd'
             sh 'ls -lah /home/Documents/dicoding/'
