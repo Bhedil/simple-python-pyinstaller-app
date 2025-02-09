@@ -22,7 +22,7 @@ node {
             try {
                 sh 'set -x'  // Enable debug logging
                 sh 'ls -lah'  // List current files
-                sh 'apt-get update && apt-get install -y python-pip'
+                sh 'sudo apt-get update -y && sudo apt-get install -y python-pip'
                 sh 'pip install --no-cache-dir pyinstaller || echo "Failed to install PyInstaller!"'
                 sh 'pyinstaller --version || echo "PyInstaller is missing!"'
                 sh 'ls -lah sources || echo "Sources directory is missing!"'
