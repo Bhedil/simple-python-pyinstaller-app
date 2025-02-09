@@ -22,6 +22,7 @@ node {
             try {
                 sh 'set -x'  // Enable debug logging
                 sh 'ls -lah'  // List current files
+                sh 'pip install --no-cache-dir pyinstaller || echo "Failed to install PyInstaller!"'
                 sh 'pyinstaller --version || echo "PyInstaller is missing!"'
                 sh 'ls -lah sources || echo "Sources directory is missing!"'
                 sh 'pyinstaller --onefile sources/add2vals.py'
