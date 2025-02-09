@@ -19,9 +19,7 @@ node {
 
     stage('Deliver') {
         docker.image('cdrx/pyinstaller-linux:python2').inside {
-            sh 'pyinstaller --version || echo "PyInstaller not found!"'
-            sh 'ls -lah sources'
-            sh 'pyinstaller --onefile sources/add2vals.py'
+            sh 'set -x && pyinstaller --onefile sources/add2vals.py'
         }
 
         archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
