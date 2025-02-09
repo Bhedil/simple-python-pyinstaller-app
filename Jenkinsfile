@@ -1,20 +1,6 @@
 node {
-    stage('Fix Git Safe Directory') {
-        sh 'git config --global --add safe.directory /var/jenkins_home/workspace/simple-python-pyinstaller-app'
-    }
-
     stage('Checkout') {
         checkout scm
-        sh 'ls -lah'
-        sh 'ls -lah sources'
-    }
-
-    stage('Debug Inside Container') {
-        docker.image('python:2-alpine').inside {
-            sh 'pwd'
-            sh 'ls -lah'
-            sh 'ls -lah sources'
-        }
     }
 
     stage('Build') {
