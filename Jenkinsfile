@@ -18,7 +18,7 @@ node {
     }
 
     stage('Deliver') {
-        docker.image('cdrx/pyinstaller-linux:python2').inside("--entrypoint=''") {
+        docker.image('cdrx/pyinstaller-linux:python2').inside("--entrypoint='' --user root") {
             try {
                 sh 'set -x'  // Enable debug logging
                 sh 'ls -lah'  // List current files
