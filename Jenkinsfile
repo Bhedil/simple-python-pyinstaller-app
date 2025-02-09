@@ -4,11 +4,9 @@ node {
     }
 
     stage('Checkout') {
-        steps {
-            checkout scm
-            sh 'ls -lah'
-            sh 'ls -lah sources'
-        }
+        checkout scm
+        sh 'ls -lah'
+        sh 'ls -lah sources'
     }
 
     stage('Debug Inside Container') {
