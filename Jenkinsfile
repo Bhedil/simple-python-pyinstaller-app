@@ -25,7 +25,8 @@ node {
             sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-updates main restricted universe multiverse" >> /etc/apt/sources.list'
             sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-security main restricted universe multiverse" >> /etc/apt/sources.list'
             sh 'apt-get update && apt-get install -y python-pip'
-            sh 'pip install pyinstaller'
+            sh 'pip install --upgrade pip setuptools wheel'
+            sh 'pip install pyinstaller==3.6'  // Install last Python 2 compatible version
             sh 'pyinstaller --version || echo "PyInstaller is still missing!"'
             sh 'ls -lah sources || echo "Sources directory is missing!"'
             sh 'pyinstaller --onefile sources/add2vals.py'
