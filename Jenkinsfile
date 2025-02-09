@@ -1,4 +1,14 @@
 node {
+    stage('Debug Checkout') {
+        try {
+            sh 'pwd'
+            sh 'ls -lah /home/Documents/dicoding/'
+            sh 'ls -lah /home/Documents/dicoding/simple-python-pyinstaller-app'
+            sh 'git status'
+        } catch (Exception e) {
+            echo "Error during checkout debug: ${e}"
+        }
+    }
     stage('Build') {
         docker.image('python:2-alpine').inside {
             sh 'python -m py_compile ./sources/add2vals.py ./sources/calc.py'
