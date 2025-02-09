@@ -19,7 +19,14 @@ node {
 
     stage('Deliver') {
         docker.image('cdrx/pyinstaller-linux:python2').inside {
-            sh 'pyinstaller --onefile sources/add2vals.py'
+            try {
+                sh 'set -x'  // Enable debug logging
+                sh 'pyinstaller --version || echo "PyInstaller is missing!"'
+                sh 'ls -lah sources || echo "Sources directory is missing!"'
+                sh 'pyinstaller --onefile sources/add2vals.py'
+            } catch (Exception e) {
+                echo "Delivery stage failed: ${e}"
+            }
         }
 
         archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
