@@ -18,18 +18,13 @@ node {
     }
 
     stage('Deliver') {
-        docker.image('cdrx/pyinstaller-linux:python2').inside('--rm -v $WORKSPACE:/workspace -w /workspace') {
-            try {
-                sh 'set -x'  // Enable debug logging
-                sh 'ls -lah'  // List current files
-                sh 'pyinstaller --version || echo "PyInstaller is missing!"'
-                sh 'ls -lah sources || echo "Sources directory is missing!"'
-                sh 'pyinstaller --onefile sources/add2vals.py'
-            } catch (Exception e) {
-                echo "Delivery stage failed: ${e}"
-            }
+        env.VOLUME = "${pwd()}/sources:/src"
+        env.IMAGE = 'cdrx/pyinstaller-linux:python2'
+        dir(env.BUILD_ID) {
+            unstash(name: 'compiled-results')
+            sh "docker run --rm -v ${env.VOLUME} ${env.IMAGE} 'pyinstaller -F add2vals.py'"
         }
-
-        archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
+        archiveArtifacts "sources/dist/add2vals"
+        sh "docker run --rm -v ${env.VOLUME} ${env.IMAGE} 'rm -rf build dist'"
     }
 }
