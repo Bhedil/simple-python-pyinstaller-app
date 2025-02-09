@@ -21,6 +21,7 @@ node {
         docker.image('cdrx/pyinstaller-linux:python2').inside('--rm -v $WORKSPACE:/workspace -w /workspace') {
             try {
                 sh 'set -x'  // Enable debug logging
+                sh 'ls -lah'  // List current files
                 sh 'pyinstaller --version || echo "PyInstaller is missing!"'
                 sh 'ls -lah sources || echo "Sources directory is missing!"'
                 sh 'pyinstaller --onefile sources/add2vals.py'
