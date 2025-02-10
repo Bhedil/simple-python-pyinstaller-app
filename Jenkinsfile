@@ -25,6 +25,7 @@ node {
             sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-updates main restricted universe multiverse" >> /etc/apt/sources.list'
             sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-security main restricted universe multiverse" >> /etc/apt/sources.list'
             sh 'apt-get update && apt-get install -y python-pip'
+            sh 'pip install --upgrade setuptools'
             sh 'pip install https://github.com/pyinstaller/pyinstaller/archive/master.tar.gz'
             sh 'pyinstaller --version || echo "PyInstaller is still missing!"'
             sh 'ls -lah sources || echo "Sources directory is missing!"'
