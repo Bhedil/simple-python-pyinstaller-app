@@ -20,7 +20,7 @@ node {
     stage('Deliver') {
         docker.image('cdrx/pyinstaller-linux:python2').inside("--entrypoint='' --user root") {
             try {
-            sh 'docker run --rm -v "$(pwd):/src/" ${BASE_IMAGE}-${TARGET_OS}:${IMAGE_TAG} "pyinstaller file-creator.py"'
+            sh 'pyinstaller --onefile sources/add2vals.py'
             } catch (Exception e) {
                 echo "Delivery stage failed: ${e}"
             }
