@@ -29,6 +29,8 @@ node {
             // sh 'pyinstaller --version || echo "PyInstaller is still missing!"'
             // sh 'ls -lah sources || echo "Sources directory is missing!"'
             sh 'py --version || python --version || echo "python is not found"'
+            sh 'pip --version || echo "pip is missing"'
+            sh 'pip install pyinstaller==3.6'
             sh 'pyinstaller --onefile sources/add2vals.py'
             } catch (Exception e) {
                 echo "Delivery stage failed: ${e}"
