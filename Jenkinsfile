@@ -18,7 +18,7 @@ node {
     }
 
     stage('Deliver') {
-        docker.image('cdrx/pyinstaller-linux:python2').inside("--entrypoint='' --user root") {
+        docker.image('cdrx/pyinstaller-linux:python2').inside() {
             try {
             sh 'pyinstaller --onefile sources/add2vals.py'
             } catch (Exception e) {
