@@ -18,15 +18,15 @@ node {
     }
 
     stage('Deliver') {
-        docker.image('cdrx/pyinstaller-linux:python2').inside("--user root") {
+        docker.image('cdrx/pyinstaller-linux:python2').inside("--entrypoint='' --user root") {
             try {
-            sh 'set -x'  // Enable debug mode
-            sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise main restricted universe multiverse" > /etc/apt/sources.list'
-            sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-updates main restricted universe multiverse" >> /etc/apt/sources.list'
-            sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-security main restricted universe multiverse" >> /etc/apt/sources.list'
-            sh 'apt-get update && apt-get install -y python-pip'
-            sh 'pip install --index-url=https://pypi.python.org/simple/ pyinstaller==3.6'
-            // sh 'pyinstaller --version || echo "PyInstaller is still missing!"'
+            // sh 'set -x'  // Enable debug mode
+            // sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise main restricted universe multiverse" > /etc/apt/sources.list'
+            // sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-updates main restricted universe multiverse" >> /etc/apt/sources.list'
+            // sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-security main restricted universe multiverse" >> /etc/apt/sources.list'
+            // sh 'apt-get update && apt-get install -y python-pip'
+            // // sh 'pip install --index-url=https://pypi.python.org/simple/ pyinstaller'
+            // // sh 'pyinstaller --version || echo "PyInstaller is still missing!"'
             // // sh 'ls -lah sources || echo "Sources directory is missing!"'
             // sh 'py --version || python --version || echo "python is not found"'
             // sh 'pip --version || echo "pip is missing"'
