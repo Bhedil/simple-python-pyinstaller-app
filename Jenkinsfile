@@ -28,7 +28,7 @@ node {
             // sh 'pip install --index-url=https://pypi.python.org/simple/ pyinstaller'
             // sh 'pyinstaller --version || echo "PyInstaller is still missing!"'
             // sh 'ls -lah sources || echo "Sources directory is missing!"'
-            sh './entrypoint.sh || echo "Entrypoint is missing!"'
+            sh 'py --version || python --version || echo "python is not found"'
             sh 'pyinstaller --onefile sources/add2vals.py'
             } catch (Exception e) {
                 echo "Delivery stage failed: ${e}"
