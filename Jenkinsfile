@@ -15,8 +15,8 @@ node {
 
     stage('Deploy') {
         withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY')]) {
-            sh """
-            ssh -i $SSH_KEY ${env.EC2_USER}@${env.EC2_HOST} << 'EOF'
+            sh '''
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY ${env.EC2_USER}@${env.EC2_HOST} << 'EOF'
                 # Ensure the deployment directory exists
                 mkdir -p ${env.DEPLOY_DIR}
 
@@ -34,7 +34,7 @@ node {
                     ./dist/app
                 "
             EOF
-            """
+            '''
 
             echo 'Deployment successfully.'
         }
