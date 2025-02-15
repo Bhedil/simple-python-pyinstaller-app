@@ -18,7 +18,7 @@ node {
     }
 
     stage('Deploy') {
-        docker.image('image 'python:3.9'').inside("--user root") {
+        docker.image('python:3.9').inside("--user root") {
             try {
                 sh 'pip install pyinstaller'
                 sh 'pyinstaller --onefile sources/add2vals.py'
