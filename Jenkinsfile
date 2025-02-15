@@ -16,9 +16,9 @@ node {
     stage('Deploy') {
     withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY')]) {
             sh """
-            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY ${env.EC2_USER}@${env.EC2_HOST} <<- EOF
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${SSH_KEY} ${env.EC2_USER}@${env.EC2_HOST} <<- EOF
                 # Update packages and install Docker
-                sudo yum update -y && sudo yum install -y docker
+                sudo yum update -y && sudo yum install -y docker && sudo yum install -y git
 
                 # Start Docker service
                 sudo service docker start
@@ -26,6 +26,14 @@ node {
 
                 # Ensure the deployment directory exists
                 mkdir -p ${env.DEPLOY_DIR}
+
+                cd ${env.DEPLOY_DIR}
+                if [ -d ".git" ]; then
+                    sudo git reset --hard
+                    sudo git pull origin master
+                else
+                    sudo git clone -b master https://github.com/Bhedil/simple-python-pyinstaller-app.git .  # Replace with your repo
+                fi
 
                 # Pull the latest Python Docker image
                 sudo docker pull python:3.9
