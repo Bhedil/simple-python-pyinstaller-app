@@ -27,10 +27,6 @@ node {
                 # Pull the latest Python Docker image
                 sudo docker pull python:3.9
                 
-                # Stop and remove the existing container if running
-                sudo docker stop ${env.APP_NAME} || true
-                sudo docker rm ${env.APP_NAME} || true
-                
                 # Run the application inside a persistent Docker container
                 sudo docker run -d --name  ${env.APP_NAME}  -v  ${env.DEPLOY_DIR} :/app -w /app python:3.9 bash -c '
                     pip install pyinstaller &&
