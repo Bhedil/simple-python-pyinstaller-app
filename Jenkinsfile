@@ -15,7 +15,7 @@ node {
 
     stage('Deploy') {
     withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY')]) {
-            sh '''
+            sh """
                 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY ''' + env.EC2_USER + '''@''' + env.EC2_HOST + ''' << EOF
                     # Update packages and install Docker
                     sudo yum update -y && sudo yum install -y docker
@@ -40,7 +40,7 @@ node {
                         pyinstaller --onefile sources/add2vals.py
                     "
                 EOF
-            '''
+            """
             echo 'Deployment successfully.'
         }
     }
