@@ -56,7 +56,12 @@ node {
                     pyinstaller --onefile sources/add2vals.py &&
                     tail -f /dev/null
                 "
-                sudo docker cp pythonapp-aidilnizar:/app/dist/add2vals /home/ec2-user/
+                # Copy the built artifact from the container's volume to EC2
+                sudo cp ${env.DEPLOY_DIR}/dist/add2vals ${env.DEPLOY_DIR}/add2vals
+            """
+
+            sh """
+            scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY ${env.EC2_USER}@${env.EC2_HOST}:${env.DEPLOY_DIR}/add2vals .
             """
             
             archiveArtifacts artifacts: 'add2vals', fingerprint: true
