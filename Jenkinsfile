@@ -14,17 +14,29 @@ node {
     }
 
     stage('Deploy') {
-        docker.image('python:3.9').inside("--user root") {
-            try {
-                sh 'pip install pyinstaller'
-                sh 'pyinstaller --onefile sources/add2vals.py'
-                sleep time: 1, unit: 'MINUTES'
-                echo 'Pipeline has finished successfully.'
-            } catch (Exception e) {
-                echo "Deploy stage failed: ${e}"
-            }
-        }
+        withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+            sh """
+            ssh -i $SSH_KEY ${env.EC2_USER}@${env.EC2_HOST} << 'EOF'
+                # Ensure the deployment directory exists
+                mkdir -p ${env.DEPLOY_DIR}
 
-        archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
+                # Pull the latest Python Docker image
+                docker pull python:3.9
+
+                # Stop and remove the existing container if running
+                docker stop ${env.APP_NAME} || true
+                docker rm ${env.APP_NAME} || true
+
+                # Run the application inside a persistent Docker container
+                docker run -d --name ${env.APP_NAME} -v ${env.DEPLOY_DIR}:/app -w /app python:3.9 bash -c "
+                    pip install pyinstaller &&
+                    pyinstaller --onefile app.py &&
+                    ./dist/app
+                "
+            EOF
+            """
+
+            echo 'Deployment successfully.'
+        }
     }
 }
