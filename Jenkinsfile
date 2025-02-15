@@ -45,7 +45,8 @@ node {
                 # Run the application inside a persistent Docker container
                 sudo docker run -d --name ${env.APP_NAME} -v ${env.DEPLOY_DIR}:/app -w /app python:3.9 bash -c "
                     pip install pyinstaller &&
-                    pyinstaller --onefile sources/add2vals.py
+                    pyinstaller --onefile sources/add2vals.py &&
+                    tail -f /dev/null
                 "
             """
             echo 'Deployment successfully.'
