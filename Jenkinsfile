@@ -18,7 +18,7 @@ node {
             sh '''
             ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY ${env.EC2_USER}@${env.EC2_HOST} << 'EOF'
                 # Ensure the deployment directory exists
-                mkdir -p ''' + env.DEPLOY_DIR + '''
+                mkdir -p env.DEPLOY_DIR
                 
                 # Pull the latest Python Docker image
                 docker pull python:3.9
