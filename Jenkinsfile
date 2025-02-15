@@ -38,8 +38,7 @@ node {
                 sudo docker run -d --name ${env.APP_NAME} -v ${env.DEPLOY_DIR}:/app -w /app python:3.9 bash -c "
                     pip install pyinstaller &&
                     pyinstaller --onefile sources/add2vals.py
-                "
-            EOF
+                "EOF
             """
             echo 'Deployment successfully.'
         }
