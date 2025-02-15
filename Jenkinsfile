@@ -35,7 +35,7 @@ node {
                     pip install pyinstaller &&
                     pyinstaller --onefile sources/add2vals.py
                 '
-            "EOF"
+            'EOF'
             """
 
             echo 'Deployment successfully.'
