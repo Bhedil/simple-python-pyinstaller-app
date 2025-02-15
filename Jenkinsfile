@@ -16,30 +16,30 @@ node {
     stage('Deploy') {
     withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY')]) {
             sh """
-                ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY ''' + env.EC2_USER + '''@''' + env.EC2_HOST + ''' << EOF
-                    # Update packages and install Docker
-                    sudo yum update -y && sudo yum install -y docker
-                    
-                    # Start Docker service
-                    sudo service docker start
-                    sudo usermod -a -G docker ec2-user
-                    
-                    # Ensure the deployment directory exists
-                    mkdir -p ''' + env.DEPLOY_DIR + '''
-                    
-                    # Pull the latest Python Docker image
-                    sudo docker pull python:3.9
-                    
-                    # Stop and remove the existing container if running
-                    sudo docker stop ''' + env.APP_NAME + ''' || true
-                    sudo docker rm ''' + env.APP_NAME + ''' || true
-                    
-                    # Run the application inside a persistent Docker container
-                    sudo docker run -d --name ''' + env.APP_NAME + ''' -v ''' + env.DEPLOY_DIR + ''':/app -w /app python:3.9 bash -c "
-                        pip install pyinstaller &&
-                        pyinstaller --onefile sources/add2vals.py
-                    "
-                EOF
+            ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i $SSH_KEY ${env.EC2_USER}@${env.EC2_HOST} << EOF
+                # Update packages and install Docker
+                sudo yum update -y && sudo yum install -y docker
+
+                # Start Docker service
+                sudo service docker start
+                sudo usermod -a -G docker ec2-user
+
+                # Ensure the deployment directory exists
+                mkdir -p ${env.DEPLOY_DIR}
+
+                # Pull the latest Python Docker image
+                sudo docker pull python:3.9
+
+                # Stop and remove the existing container if running
+                sudo docker stop ${env.APP_NAME} || true
+                sudo docker rm ${env.APP_NAME} || true
+
+                # Run the application inside a persistent Docker container
+                sudo docker run -d --name ${env.APP_NAME} -v ${env.DEPLOY_DIR}:/app -w /app python:3.9 bash -c "
+                    pip install pyinstaller &&
+                    pyinstaller --onefile sources/add2vals.py
+                "
+            EOF
             """
             echo 'Deployment successfully.'
         }
