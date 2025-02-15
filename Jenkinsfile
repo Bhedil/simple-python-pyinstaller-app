@@ -56,7 +56,7 @@ node {
                     pyinstaller --onefile sources/add2vals.py &&
                     tail -f /dev/null
                 "
-                sudo docker cp pythonapp-aidilnizar:/app/dist/add2vals .
+                sudo docker cp pythonapp-aidilnizar:/app/dist/add2vals /home/ec2-user/
             """
             
             archiveArtifacts artifacts: 'add2vals', fingerprint: true
