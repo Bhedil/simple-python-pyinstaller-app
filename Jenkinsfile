@@ -26,6 +26,9 @@ node {
                 
                 # Pull the latest Python Docker image
                 sudo docker pull python:3.9
+
+                docker stop ${env.APP_NAME} || true
+                docker rm ${env.APP_NAME} || true
                 
                 # Run the application inside a persistent Docker container
                 sudo docker run -d --name  ${env.APP_NAME}  -v  ${env.DEPLOY_DIR}:/app -w /app python:3.9 bash -c '
