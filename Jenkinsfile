@@ -17,9 +17,9 @@ node {
     withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY')]) {
             sh """
             ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${SSH_KEY} ${env.EC2_USER}@${env.EC2_HOST} << "EOF"
-                yum update -y && yum install -y docker
+                sudo yum update -y && sudo yum install -y docker
 
-                service docker start && usermod -a -G docker ec2-user
+                sudo service docker start && sudo usermod -a -G docker ec2-user
                 
                 # Ensure the deployment directory exists
                 mkdir -p env.DEPLOY_DIR
