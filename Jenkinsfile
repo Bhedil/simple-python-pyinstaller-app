@@ -13,6 +13,10 @@ node {
         junit 'test-reports/results.xml'
     }
 
+    stage('Manual Approval') {
+        input message: 'Lanjutkan ke tahap Deploy? (Klik "Proceed" untuk mengakhiri)'
+    }
+
     stage('Deploy') {
     withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-ssh-key', keyFileVariable: 'SSH_KEY')]) {
             sh """
@@ -49,6 +53,7 @@ node {
                     tail -f /dev/null
                 "
             """
+            sleep time: 1, unit: 'MINUTES'
             echo 'Deployment successfully.'
         }
     }
