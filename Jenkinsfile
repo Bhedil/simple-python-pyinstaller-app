@@ -17,23 +17,18 @@ node {
         junit 'test-reports/results.xml'
     }
 
-    // stage('Deliver') {
-    //     docker.image('cdrx/pyinstaller-linux:python2').inside("--entrypoint='' --user root") {
-    //         try {
-    //         sh 'set -x'  // Enable debug mode
-    //         sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise main restricted universe multiverse" > /etc/apt/sources.list'
-    //         sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-updates main restricted universe multiverse" >> /etc/apt/sources.list'
-    //         sh 'echo "deb http://old-releases.ubuntu.com/ubuntu/ precise-security main restricted universe multiverse" >> /etc/apt/sources.list'
-    //         sh 'apt-get update && apt-get install -y python-pip'
-    //         sh 'py -m pip install pyinstaller'
-    //         sh 'pyinstaller --version || echo "PyInstaller is still missing!"'
-    //         sh 'ls -lah sources || echo "Sources directory is missing!"'
-    //         sh 'pyinstaller --onefile sources/add2vals.py'
-    //         } catch (Exception e) {
-    //             echo "Delivery stage failed: ${e}"
-    //         }
-    //     }
+    stage('Deploy') {
+        docker.image('python:3.9').inside("--user root") {
+            try {
+                sh 'pip install pyinstaller'
+                sh 'pyinstaller --onefile sources/add2vals.py'
+                sleep time: 1, unit: 'MINUTES'
+                echo 'Pipeline has finished successfully.'
+            } catch (Exception e) {
+                echo "Deploy stage failed: ${e}"
+            }
+        }
 
-    //     archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
-    // }
+        archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
+    }
 }
