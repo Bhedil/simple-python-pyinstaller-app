@@ -52,7 +52,10 @@ node {
                     pyinstaller --onefile sources/add2vals.py &&
                     tail -f /dev/null
                 "
+                sudo docker cp pythonapp-aidilnizar:/app/dist/add2vals .
             """
+            
+            archiveArtifacts artifacts: 'add2vals', fingerprint: true
             sleep time: 1, unit: 'MINUTES'
             echo 'Deployment successfully.'
         }
